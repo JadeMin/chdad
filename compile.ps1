@@ -4,7 +4,7 @@ FUNCTION BUILD {
 		[PARAMETER(Mandatory=$TRUE, Position=1, HelpMessage="Arch type")] [STRING]$ARCH
 	)
 
-	$OUTPATH = "bin/chdad-$OS-$ARCH"
+	$OUTPATH = "bin/$PROJECT_NAME-$OS-$ARCH"
 	IF ($OS -EQ "windows") {
 		$OUTPATH = "$OUTPATH.exe"
 	}
@@ -15,6 +15,8 @@ FUNCTION BUILD {
 }
 
 
+
+$PROJECT_NAME = "chdad"
 
 BUILD "windows" "386"
 BUILD "windows" "amd64"
