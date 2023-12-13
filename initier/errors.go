@@ -14,10 +14,10 @@ func (e *NoConfigFileError) Error() string {
 
 type NoCURFileError struct {}
 func (e *NoCURFileError) Error() string {
-	return "CUR file is not found"
+	return "CUR state file is not found"
 }
 
 type CURFileParseError struct {}
 func (e *CURFileParseError) Error() string {
-	return "CUR state file is corrupted or not valid"
+	return "CUR state file is corrupted"
 }
