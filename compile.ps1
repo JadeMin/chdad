@@ -12,8 +12,6 @@ FUNCTION BUILD {
 	$ENV:GOOS = $OS
 	$ENV:GOARCH = $ARCH
 	go build -ldflags="-s -w" -o="$OUTPATH"
-
-	COPY-ITEM "nircmdc.exe" -DESTINATION "bin/"
 }
 
 
