@@ -5,12 +5,6 @@ import (
 	json "encoding/json"
 )
 
-const (
-	NIRCMDC_PATH = "./nircmdc.exe"
-	CONFIG_PATH = "./config.json"
-	CUR_PATH = "./cur"
-)
-
 type Device struct {
 	Speaker string
 	Headset string
@@ -19,6 +13,12 @@ type Device struct {
 type Config struct {
 	Device `json:"device"`
 }
+
+const (
+	NIRCMDC_PATH = "./nircmdc.exe"
+	CONFIG_PATH = "./config.json"
+	CUR_PATH = "./cur"
+)
 
 
 
