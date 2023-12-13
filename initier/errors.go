@@ -4,7 +4,7 @@ package initier
 
 type NoNirCMDFileError struct {}
 func (e *NoNirCMDFileError) Error() string {
-	return "nircmdc.exe file is not found"
+	return "nircmdc.exe file is not found\nMaybe your daddy went to buy milk, or nircmdc.exe is not in the same directory."
 }
 
 type NoConfigFileError struct {}
