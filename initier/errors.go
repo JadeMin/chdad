@@ -4,20 +4,20 @@ package initier
 
 type NoNirCMDFileError struct {}
 func (e *NoNirCMDFileError) Error() string {
-	return "nircmdc.exe file is not found\nMaybe your daddy went to buy milk, or nircmdc.exe is not in the same directory."
+	return "NirCMD is not found.\nMaybe it's not installed, or your daddy went to buy milk."
 }
 
-type NoConfigFileError struct {}
-func (e *NoConfigFileError) Error() string {
-	return "config.json file is not found"
+type NoConfigFileWarning struct {}
+func (e *NoConfigFileWarning) Error() string {
+	return "config.json file is not found. Creating new one..."
 }
 
-type NoCURFileError struct {}
-func (e *NoCURFileError) Error() string {
-	return "CUR state file is not found"
+type NoCURFileWarning struct {}
+func (e *NoCURFileWarning) Error() string {
+	return "CUR state file is not found. Creating new one..."
 }
 
-type CURFileParseError struct {}
-func (e *CURFileParseError) Error() string {
-	return "CUR state file is corrupted"
+type CURFileParseWarning struct {}
+func (e *CURFileParseWarning) Error() string {
+	return "CUR state file is corrupted. Creating new one..."
 }

@@ -1,8 +1,9 @@
 package main
 
 import (
-	os "os"
 	json "encoding/json"
+	fmt "fmt"
+	os "os"
 )
 
 import (
@@ -45,7 +46,8 @@ func main() {
 		// if not valid
 		default: {
 			initier.InitCUR()
-			panic(&initier.CURFileParseError{})
+
+			fmt.Printf("%v\n", &initier.CURFileParseWarning{})
 		}
 	}
 }

@@ -11,7 +11,7 @@ FUNCTION BUILD {
 
 	$ENV:GOOS = $OS
 	$ENV:GOARCH = $ARCH
-	go build -ldflags="-s -w" -o="$OUTPATH"
+	go build -trimpath -ldflags="-s -w" -o="$OUTPATH"
 }
 
 

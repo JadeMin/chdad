@@ -1,85 +1,117 @@
 package initier
 
 import (
+	fmt "fmt"
 	os "os"
 	json "encoding/json"
+	filepath "path/filepath"
 )
 
 type Device struct {
-	Speaker string
-	Headset string
+	Speaker string `json:"speaker"`
+	Headset string `json:"headset"`
 }
 
 type Config struct {
-	Device `json:"device"`
+	Device Device `json:"device"`
 }
 
 const (
-	NIRCMDC_PATH = "./nircmdc.exe"
 	CONFIG_PATH = "./config.json"
 	CUR_PATH = "./cur"
 )
+var NIRCMD_PATH string
+
+func checkHasNirCMD(directory string) (string, error) {
+	var (
+		checker string
+		err error
+	)
 
 
-
-/*func initNirCMD() {
-	panic(&NoNirCMDFileError{})
-}*/
-
-func CheckInitiated() error {
-	_, err := os.Stat(NIRCMDC_PATH)
-	if err != nil {
-		return &NoNirCMDFileError{}
+	checker = filepath.Join(directory, "nircmd.exe")
+	_, err = os.Stat(checker)
+	if err == nil {
+		return checker, nil
+	}
+	
+	checker = filepath.Join(directory, "nircmdc.exe")
+	_, err = os.Stat(checker)
+	if err == nil {
+		return checker, nil
 	}
 
-	_, err = os.Stat(CONFIG_PATH)
-	if err != nil {
-		return &NoConfigFileError{}
+	return "", err
+}
+func getNirCMDPath() (string, error) {
+	var (
+		nircmd string
+		err error
+	)
+
+
+	nircmd, err = checkHasNirCMD(os.Getenv("WINDIR"))
+	if err == nil {
+		return nircmd, nil
 	}
 
-	_, err = os.Stat(CUR_PATH)
-	if err != nil {
-		return &NoCURFileError{}
+	nircmd, err = checkHasNirCMD("./")
+	if err == nil {
+		return nircmd, nil
 	}
 
-	return nil
+	return "", err
+}
+
+
+
+func InitNirCMD() {
+	var err error
+
+	NIRCMD_PATH, err = getNirCMDPath()
+	if err != nil {
+		panic(&NoNirCMDFileError{})
+	}
 }
 
 func InitConfig() {
-	config := &Config{
-		Device{
-			Speaker: "Speaker",
-			Headset: "Headset",
-		},
-	}
-
-	file, err := json.MarshalIndent(config, "", "\t")
+	_, err := os.Stat(CONFIG_PATH)
 	if err != nil {
-		panic(err)
-	}
+		fmt.Printf("%v\n", &NoConfigFileWarning{})
 
-	err = os.WriteFile(CONFIG_PATH, file, 0644)
-	if err != nil {
-		panic(err)
+		config := &Config{
+			Device{
+				Speaker: "Speaker",
+				Headset: "Headset",
+			},
+		}
+	
+		file, err := json.MarshalIndent(config, "", "\t")
+		if err != nil {
+			panic(err)
+		}
+	
+		err = os.WriteFile(CONFIG_PATH, file, 0644)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
 func InitCUR() {
-	err := os.WriteFile(CUR_PATH, []byte("0"), 0644)
+	_, err := os.Stat(CUR_PATH)
 	if err != nil {
-		panic(err)
+		fmt.Printf("%v\n", &NoCURFileWarning{})
+
+		err = os.WriteFile(CUR_PATH, []byte("0"), 0644)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
 func InitAll() {
-	err := CheckInitiated()
-	if err != nil {
-		if err.Error() == (&NoNirCMDFileError{}).Error() {
-			panic(err)
-		}
-
-		//InitNirCMD()
-		InitConfig()
-		InitCUR()
-	}
+	InitNirCMD()
+	InitConfig()
+	InitCUR()
 }
