@@ -3,26 +3,39 @@ package initier
 import (
 	fmt "fmt"
 	os "os"
-	json "encoding/json"
 	filepath "path/filepath"
+	json "encoding/json"
 )
 
 type Device struct {
 	Speaker string `json:"speaker"`
 	Headset string `json:"headset"`
 }
-
 type Config struct {
 	Device Device `json:"device"`
 }
 
-const (
-	CONFIG_PATH = "./config.json"
-	CUR_PATH = "./cur"
+var cwd string
+var (
+	NIRCMD_PATH string
+	CONFIG_PATH string
+	CUR_PATH string
 )
-var NIRCMD_PATH string
 
-func checkHasNirCMD(directory string) (string, error) {
+func init() {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+
+	cwd = filepath.Dir(ex)
+
+
+	CONFIG_PATH = filepath.Join(cwd, "config.json")
+	CUR_PATH = filepath.Join(cwd, "cur")
+}
+
+func checkHasNirCMD(directory string, findC bool) (string, error) {
 	var (
 		checker string
 		err error
@@ -35,14 +48,17 @@ func checkHasNirCMD(directory string) (string, error) {
 		return checker, nil
 	}
 	
-	checker = filepath.Join(directory, "nircmdc.exe")
-	_, err = os.Stat(checker)
-	if err == nil {
-		return checker, nil
+	if findC == true {
+		checker = filepath.Join(directory, "nircmdc.exe")
+		_, err = os.Stat(checker)
+		if err == nil {
+			return checker, nil
+		}
 	}
 
 	return "", err
 }
+
 func getNirCMDPath() (string, error) {
 	var (
 		nircmd string
@@ -50,12 +66,12 @@ func getNirCMDPath() (string, error) {
 	)
 
 
-	nircmd, err = checkHasNirCMD(os.Getenv("WINDIR"))
+	nircmd, err = checkHasNirCMD(os.Getenv("WINDIR"), true)
 	if err == nil {
 		return nircmd, nil
 	}
 
-	nircmd, err = checkHasNirCMD("./")
+	nircmd, err = checkHasNirCMD(cwd, true)
 	if err == nil {
 		return nircmd, nil
 	}
@@ -90,7 +106,7 @@ func InitConfig() {
 		if err != nil {
 			panic(err)
 		}
-	
+
 		err = os.WriteFile(CONFIG_PATH, file, 0644)
 		if err != nil {
 			panic(err)
