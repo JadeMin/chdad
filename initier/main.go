@@ -35,7 +35,7 @@ func init() {
 	CUR_PATH = filepath.Join(cwd, "cur")
 }
 
-func checkHasNirCMD(directory string, findC bool) (string, error) {
+func hasNirCMD(directory string, findC bool) (string, error) {
 	var (
 		checker string
 		err error
@@ -66,12 +66,12 @@ func getNirCMDPath() (string, error) {
 	)
 
 
-	nircmd, err = checkHasNirCMD(os.Getenv("WINDIR"), true)
+	nircmd, err = hasNirCMD(os.Getenv("WINDIR"), false)
 	if err == nil {
 		return nircmd, nil
 	}
 
-	nircmd, err = checkHasNirCMD(cwd, true)
+	nircmd, err = hasNirCMD(cwd, true)
 	if err == nil {
 		return nircmd, nil
 	}
