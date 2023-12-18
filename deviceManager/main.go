@@ -12,7 +12,7 @@ import (
 
 
 func getSwitchCommander(deviceName string, role string) *exec.Cmd {
-	return exec.Command("./nircmdc.exe", "setdefaultsounddevice", deviceName, role)
+	return exec.Command(initier.NIRCMD_PATH, "setdefaultsounddevice", deviceName, role)
 }
 
 func GetCUR() string {
