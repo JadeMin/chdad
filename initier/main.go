@@ -97,8 +97,8 @@ func InitConfig() {
 
 		config := &Config{
 			Device{
-				Speaker: "Speaker",
-				Headset: "Headset",
+				Speaker: "스피커",
+				Headset: "헤드폰",
 			},
 		}
 	
