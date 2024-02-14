@@ -12,7 +12,7 @@ type Device struct {
 	Headset string `json:"headset"`
 }
 type Config struct {
-	Device Device `json:"device"`
+	Device *Device `json:"device"`
 }
 
 var cwd string
@@ -36,14 +36,8 @@ func init() {
 }
 
 func hasNirCMD(directory string, findC bool) (string, error) {
-	var (
-		checker string
-		err error
-	)
-
-
-	checker = filepath.Join(directory, "nircmd.exe")
-	_, err = os.Stat(checker)
+	checker := filepath.Join(directory, "nircmd.exe")
+	_, err := os.Stat(checker)
 	if err == nil {
 		return checker, nil
 	}
@@ -60,13 +54,7 @@ func hasNirCMD(directory string, findC bool) (string, error) {
 }
 
 func getNirCMDPath() (string, error) {
-	var (
-		nircmd string
-		err error
-	)
-
-
-	nircmd, err = hasNirCMD(os.Getenv("WINDIR"), false)
+	nircmd, err := hasNirCMD(os.Getenv("WINDIR"), false)
 	if err == nil {
 		return nircmd, nil
 	}
@@ -96,7 +84,7 @@ func InitConfig() {
 		fmt.Printf("%v\n", &NoConfigFileWarning{})
 
 		config := &Config{
-			Device{
+			&Device{
 				Speaker: "스피커",
 				Headset: "헤드폰",
 			},
