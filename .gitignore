@@ -1,6 +1,8 @@
-/bin
+/bin/
 
 /nircmdc.exe
 
 /config.json
 /cur
+
+/profile.prof
