@@ -27,11 +27,18 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
 	cwd = filepath.Dir(ex)
 
 
+	NIRCMD_PATH, err = getNirCMDPath()
+	if err != nil {
+		panic(&NoNirCMDFileError{})
+	}
+
+
 	CONFIG_PATH = filepath.Join(cwd, "config.json")
+
+	
 	CUR_PATH = filepath.Join(cwd, "cur")
 }
 
@@ -68,15 +75,6 @@ func getNirCMDPath() (string, error) {
 }
 
 
-
-func InitNirCMD() {
-	var err error
-
-	NIRCMD_PATH, err = getNirCMDPath()
-	if err != nil {
-		panic(&NoNirCMDFileError{})
-	}
-}
 
 func InitConfig() {
 	_, err := os.Stat(CONFIG_PATH)
@@ -115,7 +113,6 @@ func InitCUR() {
 }
 
 func InitAll() {
-	InitNirCMD()
 	InitConfig()
 	InitCUR()
 }
