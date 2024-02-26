@@ -29,6 +29,5 @@ BUILD @{
 	PROJECT_NAME = "chdad"
 	BUILD = @{
 		"windows" = @("amd64", "386")
-		"linux" = @("amd64", "386")
 	}
 }
